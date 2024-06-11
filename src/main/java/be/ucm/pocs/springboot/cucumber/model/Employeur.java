@@ -56,7 +56,7 @@ public class Employeur {
     }
 
     public Set<Travailleur> getTravailleurs() {
-        return Collections.unmodifiableSet(travailleurs);
+        return travailleurs!=null?Collections.unmodifiableSet(travailleurs):Collections.emptySet();
     }
 
     boolean add(Travailleur travailleur) {

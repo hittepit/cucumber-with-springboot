@@ -49,6 +49,12 @@ public class EmployeurSteps {
         }
     }
 
+    @Given("an employer {string} with {string} as fileNumber")
+    public void anEmployerWithAsFileNumber(String denomination, String numeroDossier) throws Exception {
+        final Employeur employeur = new Employeur(numeroDossier, denomination);
+        employeurRepository.save(employeur);
+    }
+
     @When("I create an employeur")
     public void iCreateAnEmployeur() throws Exception {
         mockMvc.perform(post("/api/employeurs/"+numeroDossier).content(denomination))

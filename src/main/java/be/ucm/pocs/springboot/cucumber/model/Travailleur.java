@@ -39,7 +39,7 @@ public class Travailleur {
         this.lastName = lastName;
         this.employeur = employeur;
 
-        if(this.employeur.add(this)){
+        if(! this.employeur.add(this)){
             throw new IllegalArgumentException("Travailleur avec le même numéro existe déjà: "+numeroTravailleur);
         }
     }
