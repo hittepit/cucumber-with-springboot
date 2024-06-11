@@ -1,8 +1,11 @@
-package be.ucm.pocs.springboot.cucumber.services.impl;
+package be.ucm.pocs.springboot.cucumber.application.services.impl;
 
+import java.util.List;
+
+import be.ucm.pocs.springboot.cucumber.application.dto.EmployerDto;
+import be.ucm.pocs.springboot.cucumber.application.services.EmployeurService;
 import be.ucm.pocs.springboot.cucumber.dao.EmployeurRepository;
 import be.ucm.pocs.springboot.cucumber.model.Employeur;
-import be.ucm.pocs.springboot.cucumber.services.EmployeurService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,5 +23,10 @@ public class EmployeurServiceImpl implements EmployeurService {
         final Employeur employeur = new Employeur(numeroDossier, denomination);
         employeurRepository.save(employeur);
         return employeur.getId();
+    }
+
+    @Override
+    public List<EmployerDto> findAll() {
+        return employeurRepository.findAll().stream().map(EmployerDto::new).toList();
     }
 }

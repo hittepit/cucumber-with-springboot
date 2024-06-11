@@ -8,9 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@EnableJpaRepositories("be.ucm.pocs.springboot.cucumber.dao")
-@EntityScan("be.ucm.pocs.springboot.cucumber.model")
 @ComponentScan(basePackages = "be.ucm.pocs.springboot.cucumber")
+@EntityScan("be.ucm.pocs.springboot.cucumber.model")
+@EnableJpaRepositories("be.ucm.pocs.springboot.cucumber.dao")
 @EnableAutoConfiguration
 public class TestConfig {
 }
