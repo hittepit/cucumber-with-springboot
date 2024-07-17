@@ -1,6 +1,7 @@
 package be.ucm.pocs.springboot.cucumber.steps;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -12,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import be.ucm.pocs.springboot.cucumber.dao.EmployeurRepository;
 import be.ucm.pocs.springboot.cucumber.model.Employeur;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -41,15 +43,17 @@ public class EmployeurSteps {
         this.denomination = denomination;
     }
 
-    @Given("{int} saved employers")
-    public void initEmployers(int numberOfEmployers) {
-        for(int i=0; i<numberOfEmployers; i++) {
-            final Employeur employeur = new Employeur(Integer.toString(i), "Name" + i);
-            employeurRepository.save(employeur);
-        }
+    @DataTableType
+    public Employeur createEmployeur(Map<String, String> data) {
+        return new Employeur(data.get("number"), data.get("denomination"));
     }
 
-    @Given("an employer {string} with {string} as fileNumber")
+    @Given("the following employers")
+    public void theFollowingEmployers(List<Employeur> employeurs) {
+        employeurRepository.saveAll(employeurs);
+    }
+
+    @Given("an employer {string} with {numeroDossier} as fileNumber")
     public void anEmployerWithAsFileNumber(String denomination, String numeroDossier) throws Exception {
         final Employeur employeur = new Employeur(numeroDossier, denomination);
         employeurRepository.save(employeur);
@@ -74,10 +78,10 @@ public class EmployeurSteps {
         assertEquals(denomination, employeurs.getFirst().getDenomination());
     }
 
-    @Then("I get {int} employers")
+    @Then("^I get ([0-9]*) employers$")
     public void iGetEmployers(int numberOfEmployers) throws Exception {
         resultActions
                 .andExpect(jsonPath("$").value(hasSize(numberOfEmployers)))
-                .andExpect(jsonPath("$[*].numeroDossier").value(hasItems("0", "1","2")));
+                .andExpect(jsonPath("$[*].numeroDossier").value(hasItems("000001", "000002","000003")));
     }
 }

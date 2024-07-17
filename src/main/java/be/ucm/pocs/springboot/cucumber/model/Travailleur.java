@@ -2,6 +2,7 @@ package be.ucm.pocs.springboot.cucumber.model;
 
 import java.util.Objects;
 
+import be.ucm.pocs.springboot.cucumber.dao.converters.GenderConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Convert;
 
 @Entity
 @Table(schema = "divers", name = "travailleur")
@@ -26,17 +28,21 @@ public class Travailleur {
     @ManyToOne
     @JoinColumn(name = "employeur_fk", nullable = false, updatable = false)
     private Employeur employeur;
+    @Column(nullable = false, updatable = false)
+    @Convert(converter = GenderConverter.class)
+    private Gender gender;
 
     protected Travailleur() {
         //JPA
     }
 
-    public Travailleur(String numeroTravailleur, String firstName, String lastName, Employeur employeur) {
+    public Travailleur(String numeroTravailleur, String firstName, String lastName, Gender gender, Employeur employeur) {
         //TODO vérification que rien n'est null
 
         this.numeroTravailleur = numeroTravailleur;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.gender = gender;
         this.employeur = employeur;
 
         if(! this.employeur.add(this)){
@@ -70,6 +76,10 @@ public class Travailleur {
 
     public Employeur getEmployeur() {
         return employeur;
+    }
+
+    public Gender getGender() {
+        return gender;
     }
 
     @Override

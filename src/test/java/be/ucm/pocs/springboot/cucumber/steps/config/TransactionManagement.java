@@ -14,12 +14,12 @@ public class TransactionManagement {
         this.transactionManager = transactionManager;
     }
 
-    @Before
+    @Before("@transactional")
     public void start_transaction() {
         transaction = transactionManager.getTransaction(new DefaultTransactionDefinition());
     }
 
-    @After
+    @After("@transactional")
     public void rollback_transaction() {
         transactionManager.rollback(transaction);
     }

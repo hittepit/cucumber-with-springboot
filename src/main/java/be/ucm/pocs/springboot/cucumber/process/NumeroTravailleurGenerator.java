@@ -9,12 +9,12 @@ public class NumeroTravailleurGenerator {
     public String next(Employeur employeur) {
         final Optional<String> first = employeur.getTravailleurs().stream()
                 .map(Travailleur::getNumeroTravailleur)
-                .max((n1, n2) -> n2.compareTo(n1));
+                .max(String::compareTo);
 
         final String lastNumber = first.orElse("000000");
 
         final int nextNumber = Integer.parseInt(lastNumber)+1;
 
-        return String.format("%d06", nextNumber);
+        return String.format("%06d", nextNumber);
     }
 }

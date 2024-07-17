@@ -5,6 +5,7 @@ import be.ucm.pocs.springboot.cucumber.application.services.TravailleurService;
 import be.ucm.pocs.springboot.cucumber.dao.EmployeurRepository;
 import be.ucm.pocs.springboot.cucumber.dao.TravailleurRepository;
 import be.ucm.pocs.springboot.cucumber.model.Employeur;
+import be.ucm.pocs.springboot.cucumber.model.Gender;
 import be.ucm.pocs.springboot.cucumber.process.NumeroTravailleurGenerator;
 import be.ucm.pocs.springboot.cucumber.model.Travailleur;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,8 @@ public class TravailleurServiceImpl implements TravailleurService {
         Employeur employeur = employeurRepository.findByNumeroDossier(numeroDossier).orElseThrow();
         NumeroTravailleurGenerator numeroTravailleurGenerator = new NumeroTravailleurGenerator();
         String numero = numeroTravailleurGenerator.next(employeur);
-        Travailleur travailleur = new Travailleur(numero, travailleurDto.getFirstName(), travailleurDto.getLastName(), employeur);
+        Gender gender = Gender.fromValue(travailleurDto.getGender());
+        Travailleur travailleur = new Travailleur(numero, travailleurDto.getFirstName(), travailleurDto.getLastName(), gender, employeur);
         travailleurRepository.save(travailleur);
         return travailleur.getId();
     }
